@@ -58,8 +58,8 @@ class NameFormatter
     }
   end
 
-  def parse_formatted(name, **options)
-    parsed = parse(name, **options)
+  def parse_formatted(name, **)
+    parsed = parse(name, **)
     {
       prefix: format_prefix(parsed[:prefix]),
       first_name: format_first_name(parsed[:first_name]),
@@ -68,8 +68,8 @@ class NameFormatter
     }
   end
 
-  def format(name, **options)
-    parse_formatted(name, **options).values.compact.join(" ")
+  def format(name, **)
+    parse_formatted(name, **).values.compact.join(" ")
   end
 
   private
