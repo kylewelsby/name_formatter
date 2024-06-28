@@ -23,6 +23,7 @@ jobs:
     name: Test 🧪
     runs-on: ubuntu-latest
     strategy:
+      fail-fast: false
       matrix:
         ruby:
           - 3.3
@@ -30,6 +31,8 @@ jobs:
           - 3.1
           - 3.0
           - 2.7
+    env:
+      BUNDLE_GEMFILE: Gemfile
     steps:
       - name: Checkout 🛎️
         uses: actions/checkout@v4
@@ -41,4 +44,4 @@ jobs:
       - name: Install dependencies 📦
         run: bundle install
       - name: Run tests 🧪
-        run: ruby -Ilib test/*.rb
+        run: bundle exec ruby -Ilib test/*.rb

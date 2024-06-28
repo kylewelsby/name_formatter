@@ -5,7 +5,7 @@ require "name_formatter/version"
 
 Gem::Specification.new do |spec|
   spec.name = "name_formatter"
-  spec.version = NameFormatter::VERSION.dup
+  spec.version = NameFormatterModule::VERSION.dup
   spec.authors = ["Kyle Welsby"]
   spec.email = ["kyle@mekyle.com"]
 

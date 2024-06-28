@@ -1,6 +1,6 @@
-require "debug"
-
+require "name_formatter/version"
 class NameFormatter
+  VERSION = NameFormatterModule::VERSION
   PREFIXES = Set.new(["Mr", "Mrs", "Ms", "Miss", "The Hon", "Rev", "Dr", "Fr", "Pres", "Prof", "Msgr", "Sen", "Gov", "Rep", "Amb"]).freeze
   SUFFIXES = Set.new([
     "Esq", "Jr", "Sr", "III", "II", "I", "V", "IV", "MD", "DC", "DO", "DVM", "LLD", "VM", "DDS", "Ret", "CPA", "JD", "PhD",
