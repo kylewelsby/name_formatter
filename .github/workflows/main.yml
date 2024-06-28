@@ -1,0 +1,35 @@
+name: CI
+
+on: push
+
+jobs:
+  lint:
+    name: Lint 🚨
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+      - name: Install Ruby 💎
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+      - name: Install dependencies 📦
+        run: |
+          echo 'gem: --no-document' >> ~/.gemrc
+          gem install standardrb
+      - name: Run linter 🚨
+        run: standardrb
+  test:
+    name: Test 🧪
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout 🛎️
+        uses: actions/checkout@v2
+      - name: Install Ruby 💎
+        uses: actions/setup-ruby@v1
+        with:
+          ruby-version: 3.2
+      - name: Install dependencies 📦
+        run: bundle install
+      - name: Run tests 🧪
+        run: bundle exec ruby name_formatter_test.rb
