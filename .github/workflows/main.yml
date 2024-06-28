@@ -89,6 +89,7 @@ jobs:
             echo "No changes detected. Version is already up-to-date."
           fi
       - name: Verify gem version 🤝
+        if: ${{ github.event.inputs.version != '' }}
         run: |
           version=$(ruby -r ./lib/name_formatter/version.rb -e "puts NameFormatterModule::VERSION")
           if [ "$version" != "${{ github.event.inputs.version }}" ]; then
