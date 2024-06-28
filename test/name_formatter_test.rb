@@ -1,6 +1,6 @@
 require "minitest/autorun"
 require "faker"
-require_relative "name_formatter"
+require "name_formatter"
 
 class NameFormatterTest < Minitest::Test
   def setup
