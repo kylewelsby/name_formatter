@@ -82,9 +82,14 @@ jobs:
           sed -i "s/VERSION = .*/VERSION = \"${{ github.event.inputs.version }}\"/" lib/name_formatter/version.rb
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add lib/name_formatter/version.rb
-          git commit -m "Bump version to ${{ github.event.inputs.version }}"
-          git push
+          if [[ -n $(git status -s) ]]; then
+            echo "Changes detected. Committing and pushing..."
+            git add lib/name_formatter/version.rb
+            git commit -m "Bump version to ${{ github.event.inputs.version }}"
+            git push
+          else
+            echo "No changes detected. Version is already up-to-date."
+          fi
       - name: Verify gem version 🤝
         run: |
           version=$(ruby -r ./lib/name_formatter/version.rb -e "puts NameFormatterModule::VERSION")
