@@ -97,7 +97,7 @@ class NameFormatterTest < Minitest::Test
   end
 
   def test_de_names
-    de_names = %w(DeBerry DeBlasio DeBolt DeBord DeBose DeBusk DeForest DeGroot DeHaven DeJong DeLong DeMar DeMille DeNiro DePalma DeVito DeVries DeWitt)
+    de_names = %w[DeBerry DeBlasio DeBolt DeBord DeBose DeBusk DeForest DeGroot DeHaven DeJong DeLong DeMar DeMille DeNiro DePalma DeVito DeVries DeWitt]
     de_names.each do |name|
       assert_formatted "Robert #{name}", "Robert #{name}".upcase
     end

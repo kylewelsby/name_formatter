@@ -7,7 +7,7 @@ class NameFormatter
     "LLC", "Inc", "Corp", "Ltd", "Co", "LLC", "PLC", "GmbH", "AG", "SA", "SARL", "SRL", "BV", "CV", "NV", "SE", "SC", "SL", "SLL", "SLLC", "SCS", "SCA", "SCRL", "SCA"
   ]).freeze
 
-  NAME_REGEX = /^(?<prefix>(#{PREFIXES.join('|')}?)\.?)?\s*(?<first_name>[\w-]+)\s+(?<last_name>[\w\s'-]+)\s*(?<suffix>(#{SUFFIXES.join('|')})\.?)?$/ix
+  NAME_REGEX = /^(?<prefix>(#{PREFIXES.join("|")}?)\.?)?\s*(?<first_name>[\w-]+)\s+(?<last_name>[\w\s'-]+)\s*(?<suffix>(#{SUFFIXES.join("|")})\.?)?$/ix
 
   COMPANY_SUFFIX_REGEX = /^(.+)\s+(Inc\.?|Corp\.?|Ltd\.?|LLC|LLP|LP|Limited|Corporation|Company)$/i
   FAMILY_BUSINESS_REGEX = /^(.+)\s+(?:and|&)\s+Sons$/i
@@ -36,7 +36,7 @@ class NameFormatter
 
     if parts.size > 1
       first_name = parts.shift
-      last_name = parts.reject {|part| part == suffix}.join(' ')
+      last_name = parts.reject { |part| part == suffix }.join(" ")
       last_name = nil if last_name.empty?
     elsif prefix && parts.size == 1
       first_name = nil
@@ -65,15 +65,15 @@ class NameFormatter
   end
 
   def format(name)
-    parse_formatted(name).values.compact.join(' ')
+    parse_formatted(name).values.compact.join(" ")
   end
 
   private
 
   def company_name?(name)
     [COMPANY_SUFFIX_REGEX, FAMILY_BUSINESS_REGEX, MULTIPLE_FAMILY_NAMES_REGEX,
-     LAW_FIRM_REGEX, COMPANY_CO_REGEX, GROUP_HOLDINGS_REGEX,
-     GEOGRAPHIC_COMPANY_REGEX, TRADING_ENTERPRISES_REGEX, DOUBLE_BARRELLED_NAME_REGEX].any? { |regex| name.match?(regex) }
+      LAW_FIRM_REGEX, COMPANY_CO_REGEX, GROUP_HOLDINGS_REGEX,
+      GEOGRAPHIC_COMPANY_REGEX, TRADING_ENTERPRISES_REGEX, DOUBLE_BARRELLED_NAME_REGEX].any? { |regex| name.match?(regex) }
   end
 
   def parse_company_name(name)
@@ -82,7 +82,7 @@ class NameFormatter
     {
       prefix: nil,
       first_name: nil,
-      last_name: parts.reject { |part| part == suffix }.join(' '),
+      last_name: parts.reject { |part| part == suffix }.join(" "),
       suffix: suffix
     }
   end
@@ -91,8 +91,8 @@ class NameFormatter
     list.each do |item|
       item_parts = item.split
       if item_parts.length <= parts.length
-        potential_match = parts.take(item_parts.length).join(' ').delete('.')
-        return parts.shift(item_parts.length).join(' ') if item.casecmp?(potential_match)
+        potential_match = parts.take(item_parts.length).join(" ").delete(".")
+        return parts.shift(item_parts.length).join(" ") if item.casecmp?(potential_match)
       end
     end
     nil
@@ -103,7 +103,7 @@ class NameFormatter
     parts = name.split(/\s+|(?<=-)/)
     parts.map do |part|
       format_first_name_part(part)
-    end.join(' ').gsub('- ', '-')
+    end.join(" ").gsub("- ", "-")
   end
 
   def format_first_name_part(part)
@@ -123,7 +123,7 @@ class NameFormatter
       next_part = parts[index + 1]
       formatted_parts << format_last_name_part(part, next_part)
     end
-    formatted_parts.join(' ').gsub('- ', '-')
+    formatted_parts.join(" ").gsub("- ", "-")
   end
 
   def format_last_name_part(part, next_part)
@@ -131,7 +131,7 @@ class NameFormatter
     when /^(v[ao]n|te|ter|de)$/i
       next_part&.match?(/der/i) ? part.downcase : part.capitalize
     when PARTICLE_REGEX
-       next_part ? part.downcase : part.capitalize
+      next_part ? part.downcase : part.capitalize
     when /^dell'\w+/i
       part[0..4].capitalize + part[5..].capitalize
     when MCNAME_REGEX, DUNAME_REGEX, DENAME_REGEX, /^[od]'\w+/i
@@ -145,15 +145,15 @@ class NameFormatter
 
   def format_prefix(part)
     return if part.nil?
-    part.split.map(&:capitalize).join(' ')
+    part.split.map(&:capitalize).join(" ")
   end
 
   def format_suffix(part)
     return if part.nil?
-    matched = SUFFIXES.find {|suffix| suffix.casecmp?(part.gsub(/\.$/, ''))}
+    matched = SUFFIXES.find { |suffix| suffix.casecmp?(part.gsub(/\.$/, "")) }
     if matched
       return matched + (part.end_with?(".") ? "." : "")
     end
-    part.end_with?('.') ? part.capitalize : part.upcase
+    part.end_with?(".") ? part.capitalize : part.upcase
   end
 end
