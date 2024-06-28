@@ -1,5 +1,6 @@
 name: CI
-
+permissions:
+  contents: write
 on:
   push:
     branches:
@@ -79,8 +80,8 @@ jobs:
         if: github.event_name == 'workflow_dispatch'
         run: |
           sed -i "s/VERSION = .*/VERSION = \"${{ github.event.inputs.version }}\"/" lib/name_formatter/version.rb
-          git config user.name github-actions
-          git config user.email github-actions@github.com
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
           git add lib/name_formatter/version.rb
           git commit -m "Bump version to ${{ github.event.inputs.version }}"
           git push
