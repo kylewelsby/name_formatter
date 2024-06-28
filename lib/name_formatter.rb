@@ -1,4 +1,6 @@
 require "name_formatter/version"
+require "gaelic_name_formatter"
+
 class NameFormatter
   VERSION = NameFormatterModule::VERSION
   PREFIXES = Set.new(["Mr", "Mrs", "Ms", "Miss", "The Hon", "Rev", "Dr", "Fr", "Pres", "Prof", "Msgr", "Sen", "Gov", "Rep", "Amb"]).freeze
@@ -22,8 +24,6 @@ class NameFormatter
   DUNAME_REGEX = /^Du[b](?=[aeiou])/i
   DENAME_REGEX = /^De[bfghjlmnpvw][aeioulr](?!(?:sik|a)(?:[-,])?$)/i
 
-  MCNAME_REGEX = /^Mc[a-z]+/i
-  MACNAME_REGEX = /^Mac(?:[aà][bdilmnors]|b[eh]|c[aeioruò]|d[h]|e[aò]|f[hiru]|g[ahilouy]|i[alo]|l[aeiouù]|m[hiua]|n[aeèiìo]|p[h]|r[aiìou]|s[hipu]|t[hiu]|u[airs])+/i
   PARTICLE_REGEX = /^(de[rsl]|d[aiu]|v[oa]n|te[nr]|la|les|y|and|zu|dell[ao])$/i
 
   def parse(name)
@@ -127,6 +127,11 @@ class NameFormatter
   end
 
   def format_last_name_part(part, next_part)
+    gaelic_formatter = GaelicNameFormatter.new(part)
+    if gaelic_formatter.gaelic?
+      return gaelic_formatter.format
+    end
+
     case part.downcase
     when /^(v[ao]n|te|ter|de)$/i
       next_part&.match?(/der/i) ? part.downcase : part.capitalize
@@ -134,9 +139,9 @@ class NameFormatter
       next_part ? part.downcase : part.capitalize
     when /^dell'\w+/i
       part[0..4].capitalize + part[5..].capitalize
-    when MCNAME_REGEX, DUNAME_REGEX, DENAME_REGEX, /^[od]'\w+/i
+    when DUNAME_REGEX, DENAME_REGEX, /^[od]'\w+/i
       part[0..1].capitalize + part[2..].capitalize
-    when /^von[r]+/i, MACNAME_REGEX
+    when /^von[r]+/i
       part[0..2].capitalize + part[3..].capitalize
     else
       part.capitalize
