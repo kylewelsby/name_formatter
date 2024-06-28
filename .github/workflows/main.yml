@@ -26,8 +26,9 @@ jobs:
       fail-fast: false
       matrix:
         ruby:
+          - 3.4.0-preview1
           - 3.3
-          - 2.7
+          - 3.0
     env:
       BUNDLE_GEMFILE: Gemfile
     steps:
