@@ -75,7 +75,19 @@ puts formatter.format("ACME CORPORATION, INC.")
 
 ## 👨‍💻 Development
 
-TODO
+1. Run the tests to ensure everything is setup correctly:
+
+```ruby
+ruby -Ilib test/*.rb
+```
+
+2. To run an interactive prompt that will allow you to expriement with the code, you can use:
+
+```ruby
+irb -Ilib -rname_formatter
+```
+
+Remember to add tests for new features or bugs fixes.
 
 ## 🤝 Contributing
 
