@@ -31,7 +31,5 @@ Gem::Specification.new do |spec|
   spec.files = Dir["lib/**/*", "CHANGELOG.md", "LICENSE", "README.md"]
   spec.require_paths = ["lib"]
 
-  spec.add_development_dependency "bundler", "~> 2.0"
-  spec.add_development_dependency "minitest", "~> 5.0"
   spec.add_development_dependency "faker", "~> 3.4"
 end
