@@ -10,6 +10,15 @@ on:
   release:
     types:
       - published
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version to release'
+        required: true
+      publish:
+        description: 'Publish to RubyGems?'
+        type: boolean
+        default: false
 
 jobs:
   lint:
@@ -53,8 +62,12 @@ jobs:
       - name: Run tests 🧪
         run: bundle exec ruby -Ilib test/*.rb
   publish:
-    if: github.event_name == 'release' && github.event.action == 'published'
-    needs: test
+    if: >
+      (github.event_name == 'release' && github.event.action == 'published') ||
+      (github.event_name == 'workflow_dispatch' && github.event.inputs.publish == 'true')
+    needs:
+      - lint
+      - test
     name: Build and Publish Gem 🚀
     runs-on: ubuntu-latest
     steps:
@@ -62,6 +75,22 @@ jobs:
       - uses: ruby/setup-ruby@v1
         with:
           ruby-version: 3.3
+      - name: Update version 🔄
+        if: github.event_name == 'workflow_dispatch'
+        run: |
+          sed -i "s/VERSION = .*/VERSION = \"${{ github.event.inputs.version }}\"/" lib/name_formatter/version.rb
+          git config user.name github-actions
+          git config user.email github-actions@github.com
+          git add lib/name_formatter/version.rb
+          git commit -m "Bump version to ${{ github.event.inputs.version }}"
+          git push
+      - name: Verify gem version 🤝
+        run: |
+          version=$(ruby -r ./lib/name_formatter/version.rb -e "puts NameFormatterModule::VERSION")
+          if [ "$version" != "${{ github.event.inputs.version }}" ]; then
+            echo "Version mismatch: $version != ${{ github.event.inputs.version }}"
+            exit 1
+          fi
       - name: Install dependencies 📦
         run: |
           echo 'gem: --no-document' >> ~/.gemrc
