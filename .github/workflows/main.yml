@@ -4,11 +4,12 @@ on:
   push:
     branches:
       - main
-    tags:
-      - 'v*'
   pull_request:
     branches:
       - main
+  release:
+    types:
+      - published
 
 jobs:
   lint:
@@ -51,3 +52,32 @@ jobs:
         run: bundle install
       - name: Run tests 🧪
         run: bundle exec ruby -Ilib test/*.rb
+  publish:
+    if: github.event_name == 'release' && github.event.action == 'published'
+    needs: test
+    name: Build and Publish Gem 🚀
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: ruby/setup-ruby@v1
+        with:
+          ruby-version: 3.3
+      - name: Install dependencies 📦
+        run: |
+          echo 'gem: --no-document' >> ~/.gemrc
+          gem install bundler
+          bundle install
+      - name: Build Gem 📦
+        run: gem build *.gemspec
+      - name: Publish Gem 🚀
+        run: |
+          mkdir -p $HOME/.gem
+          touch $HOME/.gem/credentials
+          chmod 0600 $HOME/.gem/credentials
+          printf -- "---\n:rubygems_api_key: ${RUBYGEMS_API_KEY}" > $HOME/.gem/credentials
+          gem push *.gem
+        env:
+          RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+
+
+
