@@ -6,7 +6,7 @@ NameFormatter is a Ruby gem that provides robust name parsing and formatting cap
 
 ## ✨ Features
 
-- Handles personal names from various cultures (Western, Spanish, German, etc.)
+- Handles personal names from various cultures (Gaelic, Western, Spanish, German, etc.)
 - Supports company names and legal entities
 - Correctly formats prefixes, suffixes, and particles (e.g., "van", "de", "von")
 - Preserves capitalization for names like "McDonald" or "DeVito"
@@ -44,7 +44,7 @@ formatted = formatter.format("JOHN DOE")
 puts formatted  # Output: "John Doe"
 
 # Parse and Format a name
-parsed = formatter.parse_formatted("Dr. Jane Smith Jr.")
+parsed = formatter.parse_formatted("DR. JANE SMITH JR.")
 puts parsed
 # Output: {
 #   prefix: "Dr.",
@@ -54,13 +54,13 @@ puts parsed
 # }
 
 # Parse skip formatting a name
-parsed = formatter.parse("Dr. Jane Smith Jr.")
+parsed = formatter.parse("DR. JANE SMITH JR.")
 puts parsed
 # Output: {
-#   prefix: "Dr.",
-#   first_name: "Jane",
-#   last_name: "Smith",
-#   suffix: "Jr."
+#   prefix: "DR.",
+#   first_name: "JANE",
+#   last_name: "SMITH",
+#   suffix: "JR."
 # }
 
 # Handle complex names
