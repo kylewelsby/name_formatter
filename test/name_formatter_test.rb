@@ -112,6 +112,13 @@ class NameFormatterTest < Minitest::Test
     assert_formatted "Denesik-Vandervort", "Denesik-Vandervort".upcase
   end
 
+  def test_last_name_only
+    formatted = @formatter.format("MacIllDhenby".upcase, last_name_only: true)
+    assert_equal "MacIllDhenby", formatted
+    formatted = @formatter.format("MacIllDhenby".upcase, last_name_only: false)
+    assert_equal "Macilldhenby", formatted
+  end
+
   def test_stress
     skip "Long running test"
     100_000.times do

@@ -1,6 +1,6 @@
 class GaelicNameFormatter
-  PREFIXES = %w(Mac Mc Ó O' Ní Nic Bean Mhic Vuic Uí De Dè Gil Gille).freeze
-  SUFFIXES = %w(ach an àr nam riss aigh aidh ain án éis ín).freeze
+  PREFIXES = %w[Mac Mc Ó O' Ní Nic Bean Mhic Vuic Uí De Dè Gil Gille].freeze
+  SUFFIXES = %w[ach an àr nam riss aigh aidh ain án éis ín].freeze
 
   PREFIX_PATTERNS = [
     /^(Gill)(An.*)/i,
@@ -51,7 +51,7 @@ class GaelicNameFormatter
     /^(Mac)(Mh.+)([Ìì].+)/i,
     /^(Mac)([gdpms]h.*)/i,
     /^(Mac)(R[iÌìou].*)/i,
-    /^(Mac)(R[Ààa][bgiot].*)/i,
+    /^(Mac)(R[Ààa][bgiot].*)/i
   ].freeze
 
   attr_accessor :name

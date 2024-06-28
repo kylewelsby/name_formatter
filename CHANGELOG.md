@@ -10,6 +10,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Support for parsing Gaelic names
+- Allow formatting for Last Name only
 
 ## [0.1.0] - 2024-06-28
 Initial realase

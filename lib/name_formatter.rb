@@ -26,7 +26,7 @@ class NameFormatter
 
   PARTICLE_REGEX = /^(de[rsl]|d[aiu]|v[oa]n|te[nr]|la|les|y|and|zu|dell[ao])$/i
 
-  def parse(name)
+  def parse(name, last_name_only: false)
     return parse_company_name(name) if company_name?(name)
 
     parts = name.strip.split(/\s+/)
@@ -34,7 +34,11 @@ class NameFormatter
     prefix = extract_prefix_or_suffix(parts, PREFIXES)
     suffix = extract_prefix_or_suffix(parts.reverse, SUFFIXES)
 
-    if parts.size > 1
+    if last_name_only
+      first_name = nil
+      last_name = parts.reject { |part| part == suffix }.join(" ")
+    elsif parts.size > 1
+
       first_name = parts.shift
       last_name = parts.reject { |part| part == suffix }.join(" ")
       last_name = nil if last_name.empty?
@@ -54,8 +58,8 @@ class NameFormatter
     }
   end
 
-  def parse_formatted(name)
-    parsed = parse(name)
+  def parse_formatted(name, **options)
+    parsed = parse(name, **options)
     {
       prefix: format_prefix(parsed[:prefix]),
       first_name: format_first_name(parsed[:first_name]),
@@ -64,8 +68,8 @@ class NameFormatter
     }
   end
 
-  def format(name)
-    parse_formatted(name).values.compact.join(" ")
+  def format(name, **options)
+    parse_formatted(name, **options).values.compact.join(" ")
   end
 
   private
