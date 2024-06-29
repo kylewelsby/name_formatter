@@ -103,15 +103,21 @@ jobs:
           bundle install
       - name: Build Gem 📦
         run: gem build *.gemspec
+      - name: Install OTP CLI 📱
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y oathtool
       - name: Publish Gem 🚀
         run: |
           mkdir -p $HOME/.gem
           touch $HOME/.gem/credentials
           chmod 0600 $HOME/.gem/credentials
           printf -- "---\n:rubygems_api_key: ${RUBYGEMS_API_KEY}" > $HOME/.gem/credentials
-          gem push *.gem
+          OTP=$(oathtool --totp --base32 $RUBYGEMS_OTP_SECRET)
+          gem push --verbose --otp=$OTP *.gem
         env:
           RUBYGEMS_API_KEY: ${{ secrets.RUBYGEMS_API_KEY }}
+          RUBYGEMS_OTP_SECRET: ${{ secrets.RUBYGEMS_OTP_SECRET }}
 
 
 
