@@ -16,11 +16,11 @@ Gem::Specification.new do |spec|
                           appropriate capitalization, and is Unicode-aware.'
   spec.homepage = "https://github.com/kylewelsby/name_formatter"
   spec.license = "MIT"
-  spec.required_ruby_version = Gem::Requirement.new(">= 2.5.0")
+  spec.required_ruby_version = Gem::Requirement.new(">= 3.0.0")
 
   spec.metadata["allowed_push_host"] = "https://rubygems.org"
 
-  # spec.metadata["homepage_uri"] = spec.homepage
+  spec.metadata["homepage_uri"] = spec.homepage
   # spec.metadata["source_code_uri"] = "https://github.com/kylewelsby/name_formatter"
   # spec.metadata["documentation_uri"] = "https://github.com/kylewelsby/name_formatter"
   spec.metadata["changelog_uri"] = "https://github.com/kylewelsby/name_formatter/blob/main/CHANGELOG.md"
