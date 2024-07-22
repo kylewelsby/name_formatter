@@ -32,10 +32,17 @@ class GaelicNameFormatterTest < Minitest::Test
     end
   end
 
+  def test_formatted
+    assert_formatted("McClure", "MCCLURE")
+    assert_formatted("McLaughlin", "MCLAUGHLIN")
+    assert_formatted("McDermott", "MCDERMOTT")
+  end
+
   private
 
   def assert_formatted(expected, input)
-    assert_equal expected, @formatter.format(input)
+    @formatter.name = input
+    assert_equal expected, @formatter.format
   end
 
   def assert_parsed(input, expected)
